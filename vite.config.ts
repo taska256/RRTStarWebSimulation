@@ -9,8 +9,10 @@ declare module "@remix-run/node" {
 }
 
 export default defineConfig({
+  base:'RRTStarWebSimulation',
   plugins: [
     remix({
+      basename:'RRTStarWebSimulation',
       ssr: false,
       future: {
         v3_fetcherPersist: true,
