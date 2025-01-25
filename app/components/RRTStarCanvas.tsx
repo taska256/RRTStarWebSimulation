@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
+import { Link } from "lucide-react";
 const improveRadius = 40;
 const branchLength = 20;
 const playerCircleRadius = 100;
@@ -78,11 +79,16 @@ export function RRTStarCanvas() {
 
     return (
         <div>
+            <div className="fixed top-0 right-0 items-center p-2 m-2 bg-black bg-opacity-60 rounded-lg border-2 border-white hover:border-gray-600">
+                <a href="https://qiita.com/aoiacai/items/d95eb21a2dda83638eb9" target="_blank" rel="noreferrer">
+                    <Link />
+                </a>
+            </div>
             <div className="fixed bottom-0 items-center w-screen">
                 <div className="items-center w-full flex justify-center flex-row space-x-2">
                     <button
                         type="button"
-                        className="w-36 border-2 border-white bg-black bg-opacity-60 hover:bg-opacity-90 text-white py-2 px-4 rounded-lg hover:bg-gray-700"
+                        className="w-36 border-2 border-white bg-black bg-opacity-60 text-white py-2 px-4 rounded-lg hover:border-gray-600"
                         onClick={() => {
                             setStop(!stop);
                             stopRef.current = !stop;
@@ -92,7 +98,7 @@ export function RRTStarCanvas() {
                     </button>
                     <button
                         type="button"
-                        className={`w-36 border-2 border-white bg-black bg-opacity-60 hover:bg-opacity-90 text-white py-2 px-4 rounded-lg hover:bg-gray-700 ${stop ? "" : "pointer-events-none opacity-50"}`}
+                        className={`w-36 border-2 border-white bg-black bg-opacity-60 text-white py-2 px-4 rounded-lg hover:border-gray-600 ${stop ? "" : "pointer-events-none opacity-50"}`}
                         onClick={(e) => {
                             if (!canvasRef.current) return;
                             const dpr = window.devicePixelRatio || 1;
@@ -106,7 +112,7 @@ export function RRTStarCanvas() {
                     </button>
                     <button
                         type="button"
-                        className="w-36 border-2 border-white bg-black bg-opacity-60 hover:bg-opacity-90 text-white py-2 px-4 rounded-lg hover:bg-gray-700"
+                        className="w-36 border-2 border-white bg-black bg-opacity-60 text-white py-2 px-4 rounded-lg hover:border-gray-600"
                         onClick={() => {
                             TreeRef.current = new Tree(
                                 { x: 0, y: 0 },
