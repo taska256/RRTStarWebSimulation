@@ -130,6 +130,14 @@ export function RRTStarCanvas() {
                                 TreeRef.current.inCircleRemove(mouseRef);
                         };
                     }}
+                    onMouseMove={(e) => {
+                        mouseRef.current = { x: e.clientX, y: e.clientY };
+                    }}
+                    onMouseUp={() => {
+                        removeCallback.current = null;
+                        console.log("mouseup");
+                    }}
+
                     onTouchStart={(e) => {
                         const touch = e.touches[0];
                         mouseRef.current = { x: touch.clientX, y: touch.clientY };
@@ -144,12 +152,6 @@ export function RRTStarCanvas() {
                         mouseRef.current = { x: touch.clientX, y: touch.clientY };
                     }}
                     onTouchEnd={() => {
-                        removeCallback.current = null;
-                    }}
-                    onMouseMove={(e) => {
-                        mouseRef.current = { x: e.clientX, y: e.clientY };
-                    }}
-                    onMouseUp={() => {
                         removeCallback.current = null;
                     }}
                 />
@@ -214,13 +216,14 @@ function draw(
     }
     let x = (Math.random() * canvas.width) / dpr;
     let y = (Math.random() * canvas.height) / dpr;
+    if (removeCallback.current) { console.log("removeCallback") }
     while (removeCallback.current && mouseRef.current && inCircle({ x, y }, mouseRef.current)) {
         x = (Math.random() * canvas.width) / dpr;
         y = (Math.random() * canvas.height) / dpr;
     }
     const node = treeRef.current.createCandidacyNode({ x: x, y: y });
     if (!stopRef.current) {
-        if (mouseRef.current) {
+        if (mouseRef.current && removeCallback.current) {
             treeRef.current.grow(node, mouseRef.current);
         } else {
             treeRef.current.grow(node, {
