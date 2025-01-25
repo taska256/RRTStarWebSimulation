@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 const improveRadius = 40;
 const branchLength = 20;
 const playerCircleRadius = 100;
@@ -121,17 +121,13 @@ export function RRTStarCanvas() {
             </div>
 
             <div ref={setContainerRef} className="w-screen h-screen">
-                {/* biome-ignore lint/a11y/useKeyWithMouseEvents: <explanation> */}
                 <canvas
                     ref={canvasRef}
-                    onMouseOver={(e) => {
-                        mouseRef.current = { x: e.clientX, y: e.clientY };
-                    }}
                     onMouseDown={(e) => {
                         mouseRef.current = { x: e.clientX, y: e.clientY };
                         removeCallback.current = () => {
                             if (mouseRef.current)
-                                TreeRef.current.inCircleRemove(mouseRef.current);
+                                TreeRef.current.inCircleRemove(mouseRef);
                         };
                     }}
                     onTouchStart={(e) => {
@@ -139,31 +135,19 @@ export function RRTStarCanvas() {
                         mouseRef.current = { x: touch.clientX, y: touch.clientY };
                         removeCallback.current = () => {
                             if (mouseRef.current)
-                                TreeRef.current.inCircleRemove(mouseRef.current);
+                                TreeRef.current.inCircleRemove(mouseRef);
                         };
                     }
                     }
                     onTouchMove={(e) => {
                         const touch = e.touches[0];
                         mouseRef.current = { x: touch.clientX, y: touch.clientY };
-                        if (removeCallback.current) {
-                            removeCallback.current = () => {
-                                if (mouseRef.current)
-                                    TreeRef.current.inCircleRemove(mouseRef.current);
-                            };
-                        };
                     }}
                     onTouchEnd={() => {
                         removeCallback.current = null;
                     }}
                     onMouseMove={(e) => {
                         mouseRef.current = { x: e.clientX, y: e.clientY };
-                        if (removeCallback.current) {
-                            removeCallback.current = () => {
-                                if (mouseRef.current)
-                                    TreeRef.current.inCircleRemove(mouseRef.current);
-                            };
-                        }
                     }}
                     onMouseUp={() => {
                         removeCallback.current = null;
@@ -230,7 +214,7 @@ function draw(
     }
     let x = (Math.random() * canvas.width) / dpr;
     let y = (Math.random() * canvas.height) / dpr;
-    while (removeCallback && mouseRef.current && inCircle({ x, y }, mouseRef.current)) {
+    while (removeCallback.current && mouseRef.current && inCircle({ x, y }, mouseRef.current)) {
         x = (Math.random() * canvas.width) / dpr;
         y = (Math.random() * canvas.height) / dpr;
     }
@@ -459,7 +443,9 @@ class Tree {
         }
         return nearestNode;
     }
-    inCircleRemove(center: Point) {
+    inCircleRemove(centerRef: React.RefObject<Point>) {
+        if (!centerRef.current) return;
+        const center = centerRef.current;
         const neighborhoodNodes = this.neighborhoodNodes(
             center,
             Math.ceil(playerCircleRadius / this.branchLength),
