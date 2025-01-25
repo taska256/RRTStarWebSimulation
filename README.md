@@ -1,3 +1,7 @@
+# Qiita
+https://qiita.com/aoiacai/items/d95eb21a2dda83638eb9
+
+
 # templates/spa
 
 This template leverages [Remix SPA Mode](https://remix.run/docs/en/main/guides/spa-mode) to build your app as a Single-Page Application using [Client Data](https://remix.run/docs/en/main/guides/client-data) for all of your data loads and mutations.
