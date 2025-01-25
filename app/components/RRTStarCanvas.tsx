@@ -134,6 +134,28 @@ export function RRTStarCanvas() {
                                 TreeRef.current.inCircleRemove(mouseRef.current);
                         };
                     }}
+                    onTouchStart={(e) => {
+                        const touch = e.touches[0];
+                        mouseRef.current = { x: touch.clientX, y: touch.clientY };
+                        removeCallback.current = () => {
+                            if (mouseRef.current)
+                                TreeRef.current.inCircleRemove(mouseRef.current);
+                        };
+                    }
+                    }
+                    onTouchMove={(e) => {
+                        const touch = e.touches[0];
+                        mouseRef.current = { x: touch.clientX, y: touch.clientY };
+                        if (removeCallback.current) {
+                            removeCallback.current = () => {
+                                if (mouseRef.current)
+                                    TreeRef.current.inCircleRemove(mouseRef.current);
+                            };
+                        };
+                    }}
+                    onTouchEnd={() => {
+                        removeCallback.current = null;
+                    }}
                     onMouseMove={(e) => {
                         mouseRef.current = { x: e.clientX, y: e.clientY };
                         if (removeCallback.current) {
